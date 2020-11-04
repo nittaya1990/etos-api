@@ -2,6 +2,13 @@
 Changelog
 =========
 
+Version 1.3.0
+-------------
+
+- 89bf934 Update etos library to version 1.3.0
+- b5d683a Add test suite validation (#11)
+- 42c4982 Upgrade etos api to python 3.9.0 (#10)
+
 Version 1.2.0
 -------------
 
