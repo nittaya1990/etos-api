@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 1.3.1
+-------------
+
+- e220ec5 Fixes a bug with validation (#12)
+
 Version 1.3.0
 -------------
 
