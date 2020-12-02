@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 1.5.0
+-------------
+
+- 663902a Update etos library to version 1.5.0
+- f352d59 Rewrite to use FastAPI instead (#13)
+
 Version 1.4.0
 -------------
 
