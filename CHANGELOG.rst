@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 1.7.0
+-------------
+
+- edb4247 Update etos library to version 1.7.0
+
 Version 1.6.0
 -------------
 
