@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 1.9.0
+-------------
+
+- 3a6c35f Update etos library to version 1.9.0
+- cd5882c Add logging support to ETOS API (#16)
+
 Version 1.8.0
 -------------
 
