@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 1.12.0
+--------------
+
+- baf6384 Update etos library to version 1.12.0
+- 1a94dd5 Make aiohttp use the environment variables by default (#17)
+
 Version 1.11.0
 --------------
 
