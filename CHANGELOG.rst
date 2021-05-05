@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 1.14.0
+--------------
+
+- d2f820e Update etos library to version 1.14.0
+- 126d8ab Added ability to provide artifact ID instead of purl. (#18)
+
 Version 1.13.0
 --------------
 
