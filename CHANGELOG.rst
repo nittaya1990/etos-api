@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 1.17.0
+--------------
+
+- 99fbea1 Update etos library to version 1.17.0
+- c6e2351 Verify environment provider configuration before continuing (#19)
+
 Version 1.16.2
 --------------
 
