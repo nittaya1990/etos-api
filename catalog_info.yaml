@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: etos-api
+  annotations:
+    github.com/project-slug: fredjn/etos-api
+spec:
+  type: other
+  lifecycle: unknown
+  owner: fredjn
