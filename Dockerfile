@@ -1,19 +1,24 @@
 FROM python:3.9.0-buster AS build
 
 COPY . /src
-WORKDIR /src
+WORKDIR /src/python
 RUN python3 setup.py bdist_wheel
 
 FROM python:3.9.0-slim-buster
+ARG TZ
+ENV TZ=$TZ
 
+COPY --from=build /src/python/dist/*.whl /tmp
 
-COPY --from=build /src/dist/*.whl /tmp
 # hadolint ignore=DL3013
+# hadolint ignore=DL3008
+RUN apt-get update && \
+    apt-get install -y gcc libc-dev tzdata --no-install-recommends && \
+    pip install --no-cache-dir /tmp/*.whl && \
+    apt-get purge -y --auto-remove gcc libc-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-# Installing an older version of pip as we wait for a real release of gql.
-RUN apt-get update && apt-get install -y gcc libc-dev --no-install-recommends && pip install --no-cache-dir pip==20.1.1 && pip install --no-cache-dir /tmp/*.whl && apt-get purge -y --auto-remove gcc libc-dev
-
-RUN groupadd -r etos && useradd -r -s /bin/false -g etos etos
+RUN groupadd -r etos && useradd -r -m -s /bin/false -g etos etos
 USER etos
 EXPOSE 8080
 

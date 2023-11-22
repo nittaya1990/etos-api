@@ -13,6 +13,7 @@ __pycache__/*
 .*.swp
 */.ipynb_checkpoints/*
 .DS_Store
+.tags
 
 # Project files
 .ropeproject
@@ -20,6 +21,7 @@ __pycache__/*
 .pydevproject
 .settings
 .idea
+.python-version
 tags
 
 # Package files
@@ -38,6 +40,7 @@ coverage.xml
 
 # Build and docs folder/files
 build/*
+bin/*
 dist/*
 sdist/*
 docs/api/*
@@ -48,3 +51,4 @@ MANIFEST
 
 # Per-project virtualenvs
 .venv*/
+.python-version
