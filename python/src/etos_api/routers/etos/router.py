@@ -44,11 +44,14 @@ async def validate_suite(test_suite_url: str) -> None:
 
     :param test_suite_url: The URL to the test suite to validate.
     """
+    span = trace.get_current_span()
+
     try:
         await SuiteValidator().validate(test_suite_url)
     except AssertionError as exception:
         LOGGER.error("Test suite validation failed!")
         LOGGER.error(exception)
+        span.add_event("Test suite validation failed")
         raise HTTPException(
             status_code=400, detail=f"Test suite validation failed. {exception}"
         ) from exception
