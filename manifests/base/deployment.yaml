@@ -20,7 +20,7 @@ spec:
       serviceAccountName: etos-api
       containers:
         - name: etos-api
-          image: registry.nordix.org/eiffel/etos-api:d53214f0
+          image: registry.nordix.org/eiffel/etos-api:96da5699
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
