@@ -20,7 +20,7 @@ spec:
       serviceAccountName: etos-logarea
       containers:
         - name: etos-logarea
-          image: registry.nordix.org/eiffel/etos-logarea:4b5c9462
+          image: registry.nordix.org/eiffel/etos-logarea:672f982e
           imagePullPolicy: IfNotPresent
           env:
             - name: SERVICE_HOST
