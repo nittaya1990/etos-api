@@ -15,6 +15,8 @@
 # limitations under the License.
 """ETOS API suite validator module."""
 import logging
+import asyncio
+import random
 from typing import List, Union
 from uuid import UUID
 
@@ -24,6 +26,7 @@ import requests
 from pydantic import BaseModel  # pylint:disable=no-name-in-module
 from pydantic import ValidationError, conlist, constr, field_validator
 from pydantic.fields import PrivateAttr
+from opentelemetry import trace
 
 from etos_api.library.docker import Docker
 
@@ -179,6 +182,7 @@ class SuiteValidator:
         :type test_suite_url: str
         :raises ValidationError: If the suite did not validate.
         """
+        span = trace.get_current_span()
         downloaded_suite = await self._download_suite(test_suite_url)
         for suite_json in downloaded_suite:
             test_runners = set()
@@ -191,6 +195,18 @@ class SuiteValidator:
                         test_runners.add(constraint.value)
             docker = Docker()
             for test_runner in test_runners:
-                assert (
-                    await docker.digest(test_runner) is not None
-                ), f"Test runner {test_runner} not found"
+                for attempt in range(3):
+                    result = await docker.digest(test_runner)
+                    if result:
+                        break
+                    span.add_event(
+                        f"Test runner validation unsuccessful, retrying {3 - attempt} more times"
+                    )
+                    self.logger.warning(
+                        "Test runner %s validation unsuccessful, retrying %d more times",
+                        test_runner,
+                        3 - attempt,
+                    )
+                    await asyncio.sleep(random.randint(1, 3))
+
+                assert result is not None, f"Test runner {test_runner} not found"
