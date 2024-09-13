@@ -8,7 +8,7 @@ export DOCKER_REGISTRY ?= registry.nordix.org
 export DOCKER_NAMESPACE ?= eiffel
 export DEPLOY ?= etos-sse
 
-PROGRAMS = sse logarea
+PROGRAMS = sse logarea iut
 COMPILEDAEMON = $(GOBIN)/CompileDaemon
 GIT = git
 GOLANGCI_LINT = $(GOBIN)/golangci-lint
@@ -86,6 +86,10 @@ tidy:
 .PHONY: check-dirty
 check-dirty:
 	$(GIT) diff --exit-code HEAD
+
+.PHONY: gen
+gen:
+	go generate ./...
 
 
 # Setup the dynamic commands

@@ -1,9 +1,9 @@
 version: "3.7"
 services:
-  etos-logarea:
+  etos-iut:
     build:
       context: .
-      dockerfile: ./deploy/etos-logarea/Dockerfile.dev
+      dockerfile: ./deploy/etos-iut/Dockerfile.dev
       args:
         http_proxy: "${http_proxy}"
         https_proxy: "${https_proxy}"
@@ -13,4 +13,4 @@ services:
       - 8080:8080
     env_file:
       - ./configs/development.env
-    entrypoint: ["/app/bin/logarea"]
+    entrypoint: ["/app/bin/iut"]
