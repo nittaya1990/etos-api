@@ -25,6 +25,7 @@ from etos_lib.lib.debug import Debug
 from fastapi.testclient import TestClient
 
 from etos_api.main import APP
+from etos_api.routers.testrun.router import convert_to_rfc1123
 from tests.fake_database import FakeDatabase
 
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
@@ -140,7 +141,7 @@ class TestRouters(TestCase):
         assert response.status_code == 308
 
     @patch("etos_api.library.validator.Docker.digest")
-    @patch("etos_api.library.validator.SuiteValidator._download_suite")
+    @patch("etos_api.routers.etos.router.download_suite")
     @patch("etos_api.library.graphql.GraphqlQueryHandler.execute")
     def test_post_on_root_with_redirect(
         self, graphql_execute_mock, download_suite_mock, digest_mock
@@ -215,7 +216,7 @@ class TestRouters(TestCase):
         assert response.status_code == 200
 
     @patch("etos_api.library.validator.Docker.digest")
-    @patch("etos_api.library.validator.SuiteValidator._download_suite")
+    @patch("etos_api.routers.etos.router.download_suite")
     @patch("etos_api.library.graphql.GraphqlQueryHandler.execute")
     def test_start_etos(self, graphql_execute_mock, download_suite_mock, digest_mock):
         """Test that POST requests to /etos attempts to start ETOS tests.
@@ -311,7 +312,7 @@ class TestRouters(TestCase):
         self.assertDictEqual(execution_space, EXECUTION_SPACE_PROVIDER)
 
     @patch("etos_api.library.validator.Docker.digest")
-    @patch("etos_api.library.validator.SuiteValidator._download_suite")
+    @patch("etos_api.routers.etos.router.download_suite")
     def test_start_etos_empty_suite(self, download_suite_mock, digest_mock):
         """Test that POST requests to /etos with an empty suite definition list fails validation
         and does not start ETOS tests.
@@ -380,3 +381,35 @@ class TestRouters(TestCase):
         response = self.client.head("/selftest/ping")
         self.logger.info("STEP: Verify that the status code is 204.")
         assert response.status_code == 204
+
+    def test_convert_to_rfc1123(self):
+        """Test that the testrun router can convert a string to an RFC-1123 accepted string.
+
+        Approval criteria:
+            - A string passed to the convert_to_rfc1123 method shall be returned as valid rfc-1123.
+
+        Test steps::
+            1. For a set of invalid strings.
+                1.1. Pass the string to the conversion method.
+                1.2. Verify that the string returned is valid rfc-1123.
+        """
+        # invalid strings contains an invalid string coupled with what it is
+        # expected to convert to.
+        invalid_strings = (
+            ("Hello World!", "hello-world"),
+            ("123_ABC", "123-abc"),
+            ("No-Change", "no-change"),
+            ("Special@#%&*()Characters", "special-characters"),
+            ("Multiple     Spaces", "multiple-spaces"),
+            ("EndWithSpecialCharacter!", "endwithspecialcharacter"),
+            ("@StartWithSpecialCharacter", "startwithspecialcharacter"),
+            ("Mixed$#Case123", "mixed-case123"),
+            ("singleword", "singleword"),
+            ("1234567890", "1234567890"),
+        )
+        self.logger.info("STEP: For a set of invalid strings.")
+        for invalid, expected in invalid_strings:
+            self.logger.info("STEP: Pass the string to the conversion method.")
+            value = convert_to_rfc1123(invalid)
+            self.logger.info("STEP: Verify that th string returned is valid rfc-1123.")
+            assert value == expected
