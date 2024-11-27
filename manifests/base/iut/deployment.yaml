@@ -20,7 +20,7 @@ spec:
       serviceAccountName: etos-iut
       containers:
         - name: etos-iut
-          image: registry.nordix.org/eiffel/etos-iut:0dba3c32
+          image: registry.nordix.org/eiffel/etos-iut:f9078530
           imagePullPolicy: IfNotPresent
           env:
             - name: SERVICE_HOST
