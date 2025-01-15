@@ -22,6 +22,10 @@ import (
 	"github.com/google/uuid"
 )
 
+type Deleter interface {
+	Delete() error
+}
+
 // Opener is the common interface for database clients
 type Opener interface {
 	Open(context.Context, uuid.UUID) io.ReadWriter
